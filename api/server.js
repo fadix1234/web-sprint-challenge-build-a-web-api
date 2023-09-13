@@ -4,9 +4,9 @@ const server = express();
 server.use(express.json())
 
 server.get('/', (req, res) => {
-    res.send(``);
- });
- 
+    res.send(`Hello Express`);
+});
+
 
 // Configure your server here
 // Build your actions router in /api/actions/actions-router.js
