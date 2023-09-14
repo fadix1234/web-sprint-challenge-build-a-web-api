@@ -23,9 +23,28 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.post('./projects', (req, res) => {
-    res.status(201).json({ url: '/', operation: 'POST' });
+router.post('/', (req, res) => {
+    const { name, description } = req.body
+    if (!name || !description) {
+        return res.status(400).json({
+            message: "Please provide name and description for the post"
+        })
+    }
+
+    Projects.insert(req.body)
+        .then((projects) => {
+            res.status(201).json(projects);
+
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({
+                message: "There was an error while saving the post to the database"
+            });
+        });
+
 });
+
 
 
 module.exports = router;
