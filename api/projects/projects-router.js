@@ -45,6 +45,28 @@ router.post('/', (req, res) => {
 
 });
 
+router.put('/:id', (req, res, next) => {
+    const { name, description } = req.body;
+
+    if (!name || !description) {
+        return res.status(400).json({
+            message: "Please provide name and description for the project"
+        });
+    }
+
+    Projects.update(req.params.id, req.body)
+      .then(updated => {
+        res.status(400).json(updated);
+      })
+      .catch(error => {
+        next({
+          message: 'We ran into an error updating the project',
+          error: error.message
+        });
+      });
+  });
+
+
 
 
 module.exports = router;
