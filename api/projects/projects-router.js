@@ -55,18 +55,32 @@ router.put('/:id', (req, res, next) => {
     }
 
     Projects.update(req.params.id, req.body)
-      .then(updated => {
-        res.status(400).json(updated);
-      })
-      .catch(error => {
-        next({
-          message: 'We ran into an error updating the project',
-          error: error.message
+        .then(updated => {
+            res.status(400).json(updated);
+        })
+        .catch(error => {
+            next({
+                message: 'We ran into an error updating the project',
+                error: error.message
+            });
         });
-      });
-  });
+});
 
 
+
+router.delete('/:id',(req,res) => {
+
+Projects.remove(req.params.id, req.body)
+    .then(removed => {
+        res.status(404).json(removed);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(404).json({
+            message: 'Project not found' 
+        });
+    });
+})
 
 
 module.exports = router;
