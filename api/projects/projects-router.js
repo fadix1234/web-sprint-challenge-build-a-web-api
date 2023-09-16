@@ -68,19 +68,39 @@ router.put('/:id', (req, res, next) => {
 
 
 
-router.delete('/:id',(req,res) => {
+router.delete('/:id', (req, res) => {
 
-Projects.remove(req.params.id, req.body)
-    .then(removed => {
-        res.status(404).json(removed);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(404).json({
-            message: 'Project not found' 
+    Projects.remove(req.params.id, req.body)
+        .then(removed => {
+            res.status(404).json(removed);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(404).json({
+                message: 'Project not found'
+            });
         });
-    });
 })
+
+
+router.get('/:id/actions', (req, res) => {
+    const projectId = req.params.id;
+
+   
+    Projects.getProjectActions(projectId)
+        .then(actions => {
+            if (actions.length > 0) {
+                res.status(200).json(actions);
+            } else {
+                res.status(404).json([]);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ message: 'An error occurred while retrieving actions for the project' });
+        });
+});
+
 
 
 module.exports = router;
